@@ -4,17 +4,32 @@
 # Challenge: convert your classes to dataclasses
 # The subclasses are required to override the magic method
 # that makes them sortable
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
-class Asset():
-    pass
-    
+@dataclass
+class Asset(ABC):
+    price: float
 
+    @abstractmethod
+    def __lt__(self, other):
+       pass
+
+@dataclass
 class Stock(Asset):
-    pass
-
-
+  ticker: str
+  company: str
+  
+  def __lt__(self, other):
+     return self.price<other.price
+@dataclass
 class Bond(Asset):
-    pass
+  description: str
+  duration: float
+  yieldamt: float
+   
+  def __lt__(self, other):
+     return self.yieldamt<other.yieldamt
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 stocks = [
@@ -35,6 +50,7 @@ try:
    ast = Asset(100.0)
 except:
    print("Can't instantiate Asset!")
+   print(bonds)
 
 stocks.sort()
 bonds.sort()
